@@ -1,0 +1,12 @@
+{% extends 'kyuyo/base.html' %}
+{% block content %}
+<ul>
+{% for row in object_list %}
+<li>{{ row.syunyu }}</li>
+{% endfor %}
+</ul>
+{% endblock content %}
+
+
+
+    

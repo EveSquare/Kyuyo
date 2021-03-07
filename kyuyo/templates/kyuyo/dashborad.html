@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    dashborad
-</body>
-</html>
+{% extends 'kyuyo/base.html' %}
+{% block content %}
+収入追加
+<form action={% url 'syunyu_update' %} method="post">{% csrf_token %}
+    <label for="kingaku">金額を入力</label>
+    <input type="text" name="kingaku" id="kingaku">
+    <button type="submit">追加</button>
+</form>
+残高:{{ zandaka.zandaka }}<br>
+直近の収入:{{ syunyu.syunyu }}<br>
+{% endblock content %}
+
+
+
+    
