@@ -40,8 +40,20 @@ class MonthlyModel(models.Model):
                     default=-540,
     )
 
+    total = models.IntegerField(
+                    blank=True,
+                    null=True,
+                    verbose_name='月額累計',
+    )
+
+    updated_at = models.DateTimeField(null=True,blank=True,editable=True)
+    
+    def __str__(self):
+        return str(self.updated_at.strftime('%Y年-%m月-%d日'))
     # class Meta:
     #     db_table = '月額'
+
+
 
 class ExpenseModel(models.Model):
 

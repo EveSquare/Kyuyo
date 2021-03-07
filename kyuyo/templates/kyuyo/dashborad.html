@@ -1,15 +1,75 @@
 {% extends 'kyuyo/base.html' %}
+
+
 {% block content %}
-収入追加
-<form action={% url 'syunyu_update' %} method="post">{% csrf_token %}
-    <label for="kingaku">金額を入力</label>
-    <input type="text" name="kingaku" id="kingaku">
-    <button type="submit">追加</button>
-</form>
+
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <form class="d-flex" action={% url 'syunyu_update' %} method="post">{% csrf_token %}
+        <input class="form-control me-2" type="tel" name="kingaku" id="kingaku" placeholder="金額を入力">
+
+        <button class="btn btn-outline-success" type="submit" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg></button>
+    </form>
+  </div>
+</nav>
+<canvas id="Chart" width="375" height="400"></canvas>
+<canvas id="pieChart" width="400" height="400"></canvas>
 残高:{{ zandaka.zandaka }}<br>
+月額適用後残高:{{ getugaku }}<br>
 直近の収入:{{ syunyu.syunyu }}<br>
+月額累計{{ monthly_total }}<br>
+
 {% endblock content %}
 
+{% block js %}
+<script>
+{% autoescape off %}
+var ctx = document.getElementById("Chart").getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['残高','月額適用後残高','直近の収入'],
+    datasets: [{
+        data: [{{ zandaka.zandaka }},{{ getugaku }},{{ syunyu.syunyu }}],
+        backgroundColor: ["rgba(255, 99, 132, 0.2)","rgba(153,255,51,0.4)","rgba(255,153,0,0.4)"]
+    }],
+  },
+  options: {
+        responsive: true,       
+        legend: {         
+            display: false
+            },
+        title: {                   
+                display: true,   
+                fontSize: 12, 
+                text: '残高'
+            },
+  }
+});
 
+var pie = document.getElementById("pieChart").getContext('2d');
+var myDoughnutChart = new Chart(pie, {
+    type: 'doughnut',
+    data: {
+    datasets: [
+    {
+        label: '月額累計',
+        data: [{{ monthly_total }}],
+        backgroundColor: "rgb(54, 162, 235)"
+    },
+    ],
+
+    labels: [
+        '月額累計'
+    ]
+  },
+});
+{% endautoescape %}
+</script>
+{% endblock js %}
 
     
