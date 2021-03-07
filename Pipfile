@@ -8,6 +8,8 @@ start = 'python3 manage.py runserver'
 
 [packages]
 django = "*"
+django-heroku = "*"
+gunicorn = "*"
 
 [dev-packages]
 
