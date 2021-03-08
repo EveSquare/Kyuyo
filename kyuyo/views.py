@@ -5,6 +5,20 @@ from .models import ZandakaModel, MonthlyModel, SyunyuModel, ZandakaModel
 from datetime import datetime
 import pytz
 # Create your views here.
+def comp_isnone(number1, number2):
+    if number1 is None:
+        temp = int(number2)
+        return temp
+    elif number2 is None:
+        temp = int(number1)
+        return temp
+    else:
+        temp = int(number1) + int(number2)
+        return temp
+
+    return 0 
+
+
 # メイン画面
 def dashborad(request):
     zandaka = ZandakaModel.objects.order_by("id").first()
@@ -17,35 +31,23 @@ def dashborad(request):
     progress_month = add_monthly()
     monthly_total = MonthlyModel.objects.order_by('-id').first().total
 
-    if result is None:
-        getugaku = int(monthly_total)
-    elif monthly_total is None:
-        getugaku = int(result)
-    else:
-        getugaku = int(result) + int(monthly_total)
+    getugaku = comp_isnone(int(result), int(monthly_total))
 
     if progress_month:
         tmp = 0
         for i in range(int(progress_month)):
             month_spend = MonthlyModel.objects.order_by('-id').first()
-            print(int(month_spend.syogaku))
             tmp = int(month_spend.syogaku) + int(month_spend.subscription)
 
-        monthly_total = int(month_spend.total) + int(tmp)
-        month_spend.total = int(month_spend.total) + int(tmp)
+        total = comp_isnone(int(month_spend.total), int(tmp))
+        monthly_total = total
+        month_spend.total = total
         month_spend.save()
 
-        if result is None:
-            getugaku = int(monthly_total)
-        elif monthly_total is None:
-            getugaku = int(result)
-        else:
-            getugaku = int(result) + int(monthly_total)
+        getugaku = comp_isnone(int(result), int(monthly_total))
 
     zandaka.zandaka = result
     zandaka.save()
-
-    
 
     params = {
         'zandaka': zandaka,
