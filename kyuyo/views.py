@@ -16,7 +16,13 @@ def dashborad(request):
 
     progress_month = add_monthly()
     monthly_total = MonthlyModel.objects.order_by('-id').first().total
-    getugaku = int(result) + int(monthly_total)
+
+    if result is None:
+        getugaku = int(monthly_total)
+    elif monthly_total is None:
+        getugaku = int(result)
+    else:
+        getugaku = int(result) + int(monthly_total)
 
     if progress_month:
         tmp = 0
@@ -29,7 +35,12 @@ def dashborad(request):
         month_spend.total = int(month_spend.total) + int(tmp)
         month_spend.save()
 
-        getugaku = result + monthly_total
+        if result is None:
+            getugaku = int(monthly_total)
+        elif monthly_total is None:
+            getugaku = int(result)
+        else:
+            getugaku = int(result) + int(monthly_total)
 
     zandaka.zandaka = result
     zandaka.save()
