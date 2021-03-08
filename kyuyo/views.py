@@ -16,7 +16,7 @@ def dashborad(request):
 
     progress_month = add_monthly()
     monthly_total = MonthlyModel.objects.order_by('-id').first().total
-    getugaku = result + monthly_total
+    getugaku = int(result) + int(monthly_total)
 
     if progress_month:
         tmp = 0
