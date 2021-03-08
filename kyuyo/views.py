@@ -39,7 +39,7 @@ def dashborad(request):
             month_spend = MonthlyModel.objects.order_by('-id').first()
             tmp = int(month_spend.syogaku) + int(month_spend.subscription)
 
-        total = comp_isnone(int(month_spend.total), int(tmp))
+        total = comp_isnone(month_spend.total, tmp)
         monthly_total = total
         month_spend.total = total
         month_spend.save()
